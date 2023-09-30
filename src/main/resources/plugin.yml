@@ -1,0 +1,6 @@
+name: mines-module
+version: '${project.version}'
+main: tech.markxhewson.mines.PrivateMines
+
+depend:
+  - WorldEdit

@@ -1,0 +1,70 @@
+mongo:
+  username: 'admin'
+  password: 'adminPass'
+  address: '81.0.246.142'
+  database: 'minevine'
+
+mines:
+  resetCooldown: 60000 # 1 minute in ms
+  borderGap: 500 # gap between each private mine in the mines world
+  miningAreaRadius: 5 # default mining area, 5x5, upgrades as mine level increases
+  expandMineEveryLevels: 40 # mine will expand every 40 mine levels
+
+schematics:
+  jungleTemplate:
+    name: '&2&lJungle Mine'
+    fileName: 'jungleMine.schematic'
+
+blocks:
+  cobblestone:
+    id: 'COBBLESTONE'
+    requiredLevel: 1
+    default: true
+  stone:
+    id: 'STONE'
+    requiredLevel: 5
+  coal_ore:
+    id: 'COAL_ORE'
+    requiredLevel: 10
+  iron_ore:
+      id: 'IRON_ORE'
+      requiredLevel: 15
+  gold_ore:
+    id: 'GOLD_ORE'
+    requiredLevel: 20
+  diamond_ore:
+    id: 'DIAMOND_ORE'
+    requiredLevel: 25
+  emerald_ore:
+    id: 'EMERALD_ORE'
+    requiredLevel: 30
+  redstone_ore:
+    id: 'REDSTONE_ORE'
+    requiredLevel: 35
+  lapis_ore:
+    id: 'LAPIS_ORE'
+    requiredLevel: 40
+  coal_block:
+    id: 'COAL_BLOCK'
+    requiredLevel: 45
+  iron_block:
+    id: 'IRON_BLOCK'
+    requiredLevel: 50
+  gold_block:
+    id: 'GOLD_BLOCK'
+    requiredLevel: 55
+  diamond_block:
+    id: 'DIAMOND_BLOCK'
+    requiredLevel: 60
+  emerald_block:
+    id: 'EMERALD_BLOCK'
+    requiredLevel: 65
+  redstone_block:
+    id: 'REDSTONE_BLOCK'
+    requiredLevel: 70
+  lapis_block:
+    id: 'LAPIS_BLOCK'
+    requiredLevel: 75
+  obsidian:
+    id: 'OBSIDIAN'
+    requiredLevel: 80
