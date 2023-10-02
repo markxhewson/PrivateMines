@@ -38,29 +38,20 @@ public class MineMenu extends Menu {
 
     @Override
     public void updateItems() {
-        List<String> lore = new LinkedList<>();
         PlayerMine mine = plugin.getMineManager().getMine(player.getUniqueId());
-
-        if (mine != null) {
-            lore.add("");
-            lore.add("&4&l| &7ID: &a" + mine.getId());
-            lore.add("&4&l| &7Mine Level: &a" + mine.getLevel());
-            lore.add("&4&l| &7Created &a" + TimeUtil.formatMillis(System.currentTimeMillis() - mine.getCreatedAt()) + " &7ago");
-            lore.add("");
-            lore.add("&7(( &aClick &7to teleport to your personal mine. ))");
-        } else {
-            lore.add("&7(( &aClick &7to create your personal mine. ))");
-        }
 
         ItemBuilder mineItem = new ItemBuilder(Material.WOOD_DOOR)
                 .setDisplayName("&a&lYour Mine")
-                .setLore(lore);
+                .setLore(
+                        "",
+                        "&4&l: &7ID: &a" + mine.getId(),
+                        "&4&l: &7Mine Level: &a" + mine.getLevel(),
+                        "&4&l: &7Created &a" + TimeUtil.formatMillis(System.currentTimeMillis() - mine.getCreatedAt()) + " &7ago",
+                        "",
+                        "&7(( &aClick &7to teleport to your personal mine. ))"
+                );
 
-        getInventory().setItem(mine == null ? 22 : 10, mineItem.build());
-
-        if (mine == null) {
-            return;
-        }
+        getInventory().setItem(10, mineItem.build());
 
         ItemBuilder resetItem = new ItemBuilder(Material.FISHING_ROD)
                 .setDisplayName("&c&lReset Mine " + (mine.getTimeRemainingOnMineCooldown() <= 0 ? "" : "&7(&f" + TimeUtil.formatMillis(mine.getTimeRemainingOnMineCooldown()) + " remaining&7)"))
@@ -108,57 +99,42 @@ public class MineMenu extends Menu {
             return;
         }
 
-        if (slot == (mine == null ? 22 : 10)) {
+        if (slot == 10) {
             handleMineTeleport(player, mine);
         }
 
-        if (mine == null) {
-            return; // Do not handle any more clicks if the mine is null
-        }
-
         if (slot == 28) {
-            long cooldownTime = mine.getTimeRemainingOnMineCooldown();
-            if (cooldownTime <= 0) {
-                handleMineReset(player, mine);
-            } else {
-                player.sendMessage(CC.translate("&cYou cannot reset your mine for another &f" + TimeUtil.formatMillis(cooldownTime) + "&c!"));
-            }
+            handleMineReset(player, mine);
         }
 
         if (slot == 32 || slot == 33 || slot == 34) {
-            if (event.isShiftClick() && item.getType() != Material.STAINED_GLASS_PANE) {
-                mine.getMineBlockManager().removeBlock(item.getType().name());
-                updateItems();
-                player.updateInventory();
-                return;
-            }
-            new MineBlockSelectMenu(plugin, mine).open(player);
+            handleCustomBlocks(event, item, mine);
         }
     }
 
     private void handleMineTeleport(Player player, PlayerMine mine) {
-        if (mine != null) {
-            mine.teleport(player);
-        } else {
-            plugin.getMineManager().createMine(player.getUniqueId()).thenAccept(isCreated -> {
-                if (isCreated) {
-                    player.sendMessage(CC.translate("&aYour mine has been created successfully."));
-                } else {
-                    player.sendMessage(("&cUnable to create your mine."));
-                }
-
-                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                    getInventory().setItem(22, null);
-                    updateItems();
-                    player.updateInventory();
-                }, 5L);
-            });
-        }
+        mine.teleport(player);
     }
 
     private void handleMineReset(Player player, PlayerMine mine) {
-        mine.updateMiningArea();
-        player.sendMessage(CC.translate("&aYour mine has been reset successfully."));
+        long cooldownTime = mine.getTimeRemainingOnMineCooldown();
+        if (cooldownTime <= 0) {
+            mine.updateMiningArea();
+            player.sendMessage(CC.translate("&aYour mine has been reset successfully."));
+        } else {
+            player.sendMessage(CC.translate("&cYou cannot reset your mine for another &f" + TimeUtil.formatMillis(cooldownTime) + "&c!"));
+        }
+    }
+
+    public void handleCustomBlocks(InventoryClickEvent event, ItemStack item, PlayerMine mine) {
+        if (event.isShiftClick() && item.getType() != Material.STAINED_GLASS_PANE) {
+            mine.getMineBlockManager().removeBlock(item.getType().name());
+            updateItems();
+            player.updateInventory();
+            return;
+        }
+
+        new MineBlockSelectMenu(plugin, mine).open(player);
     }
 
 }

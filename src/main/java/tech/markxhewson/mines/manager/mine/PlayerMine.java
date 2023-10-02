@@ -71,8 +71,8 @@ public class PlayerMine {
         updateWorldBorder(player);
     }
 
-    public void loadSchematic() {
-        MineBuilder builder = new MineBuilder(PrivateMines.getInstance(), this, "jungleMine");
+    public void loadSchematic(String themeSchematic) {
+        MineBuilder builder = new MineBuilder(PrivateMines.getInstance(), this, themeSchematic);
         builder.build();
     }
 

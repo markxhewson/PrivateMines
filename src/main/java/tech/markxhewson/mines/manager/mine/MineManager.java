@@ -71,7 +71,7 @@ public class MineManager {
     }
 
 
-    public CompletableFuture<Boolean> createMine(UUID uuid) {
+    public CompletableFuture<Boolean> createMine(UUID uuid, String themeSchematic) {
         PlayerMine mine = new PlayerMine(uuid);
 
         return CompletableFuture.supplyAsync(() -> {
@@ -81,7 +81,7 @@ public class MineManager {
                 mine.setId(id);
                 mine.setCreatedAt(System.currentTimeMillis());
                 mine.setMiningAreaRadius(plugin.getConfig().getInt("mines.miningAreaRadius"));
-                mine.loadSchematic();
+                mine.loadSchematic(themeSchematic);
 
                 playerMines.put(uuid, mine);
                 return true;

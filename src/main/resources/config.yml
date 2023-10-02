@@ -10,10 +10,15 @@ mines:
   miningAreaRadius: 5 # default mining area, 5x5, upgrades as mine level increases
   expandMineEveryLevels: 40 # mine will expand every 40 mine levels
 
-schematics:
-  jungleTemplate:
+themes:
+  jungleTheme:
     name: '&2&lJungle Mine'
+    icon: 'LEAVES'
     fileName: 'jungleMine.schematic'
+    description:
+      - "&7&oEnter the depths of the jungle..."
+      - ""
+      - "&7(( &aClick &7to select this theme ))"
 
 blocks:
   cobblestone:

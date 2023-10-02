@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.Default;
 import org.bukkit.entity.Player;
 import tech.markxhewson.mines.PrivateMines;
 import tech.markxhewson.mines.menu.MineMenu;
+import tech.markxhewson.mines.menu.SelectMineMenu;
 
 @CommandAlias("mine|mines")
 public class MineCommand extends BaseCommand {
@@ -18,7 +19,11 @@ public class MineCommand extends BaseCommand {
 
     @Default
     public void onCommand(Player player) {
-        new MineMenu(plugin, player).open(player);
+        if (plugin.getMineManager().hasMine(player.getUniqueId())) {
+            new MineMenu(plugin, player).open(player);
+        } else {
+            new SelectMineMenu(plugin, player).open(player);
+        }
     }
 
 }
