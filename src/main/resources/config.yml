@@ -19,6 +19,14 @@ themes:
       - "&7&oEnter the depths of the jungle..."
       - ""
       - "&7(( &aClick &7to select this theme ))"
+  desertTheme:
+    name: '&6&lDesert Mine'
+    icon: 'SAND'
+    fileName: 'desertMine.schematic'
+    description:
+      - "&7&oEnter the dunes of the desert..."
+      - ""
+      - "&7(( &aClick &7to select this theme ))"
 
 blocks:
   cobblestone:
