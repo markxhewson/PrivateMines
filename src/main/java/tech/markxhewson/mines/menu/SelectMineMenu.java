@@ -24,7 +24,7 @@ public class SelectMineMenu extends Menu {
 
     @Override
     public String getMenuName() {
-        return "Select your personal mine theme";
+        return "Select Mine Theme";
     }
 
     @Override
@@ -69,6 +69,11 @@ public class SelectMineMenu extends Menu {
         plugin.getMineManager().createMine(player.getUniqueId(), themeSchematic).thenAccept((success) -> {
             if (success) {
                 player.sendMessage(CC.translate("&aYour personal mine has been created!"));
+
+                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                    player.closeInventory();
+                    new MineMenu(plugin, player).open(player);
+                }, 5L);
             } else {
                 player.sendMessage(CC.translate("&cYour personal mine could not be created. Please contact an administrator."));
             }
