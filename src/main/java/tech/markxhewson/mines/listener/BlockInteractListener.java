@@ -33,6 +33,8 @@ public class BlockInteractListener implements Listener {
             player.sendMessage(CC.translate("&cYou cannot break blocks outside your mining area."));
             event.setCancelled(true);
         }
+
+        mine.giveExperience();
     }
 
     @EventHandler

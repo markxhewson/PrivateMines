@@ -20,6 +20,7 @@ import tech.markxhewson.mines.manager.builder.MineBorderBuilder;
 import tech.markxhewson.mines.manager.builder.MineBuilder;
 import tech.markxhewson.mines.manager.builder.MiningAreaBuilder;
 import tech.markxhewson.mines.manager.mine.util.MineBlockManager;
+import tech.markxhewson.mines.util.CC;
 import tech.markxhewson.mines.util.LocationUtil;
 
 import java.util.LinkedList;
@@ -37,6 +38,9 @@ public class PlayerMine {
 
     @Expose
     private int level = 1;
+
+    @Expose
+    private int experience = 0;
 
     @Expose
     private int lastMineIncreaseLevel = 1;
@@ -88,12 +92,30 @@ public class PlayerMine {
         this.lastMineReset = System.currentTimeMillis();
     }
 
+    public void giveExperience() {
+        experience += 5;
+
+        if (experience >= getExperienceForNextLevel()) {
+            setLevel(level++);
+            setExperience(0);
+
+            Player player = PrivateMines.getInstance().getServer().getPlayer(ownerUuid);
+            if (player == null) return;
+
+            player.sendMessage(CC.translate("&4&lOMG! &eYour mine has leveled up to level &f" + level + "&e!"));
+        }
+    }
+
+    public int getExperienceForNextLevel() {
+        return (int) Math.pow(25 * level, 1.5);
+    }
+
     public long getTimeRemainingOnMineCooldown() {
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - lastMineReset;
 
         if (elapsedTime >= PrivateMines.getInstance().getConfig().getInt("mines.resetCooldown")) {
-            return 0;  // Cooldown has expired
+            return 0;
         } else {
             return PrivateMines.getInstance().getConfig().getInt("mines.resetCooldown") - elapsedTime;
         }
