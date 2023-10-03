@@ -9,6 +9,7 @@ mines:
   borderGap: 500 # gap between each private mine in the mines world
   miningAreaRadius: 5 # default mining area, 5x5, upgrades as mine level increases
   expandMineEveryLevels: 40 # mine will expand every 40 mine levels
+  defaultBlockExperience: 5 # default experience gained from mining a block
 
 themes:
   jungleTheme:

@@ -1,6 +1,7 @@
 package tech.markxhewson.mines.listener;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +33,11 @@ public class BlockInteractListener implements Listener {
         if (!mine.isWithinMiningArea(location)) {
             player.sendMessage(CC.translate("&cYou cannot break blocks outside your mining area."));
             event.setCancelled(true);
+            return;
         }
+
+        event.setCancelled(true);
+        event.getBlock().setType(Material.AIR);
 
         mine.giveExperience();
     }

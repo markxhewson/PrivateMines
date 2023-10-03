@@ -23,9 +23,9 @@ public class MineManager {
         this.plugin = plugin;
 
         this.saveMinesTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            plugin.getServer().broadcastMessage(CC.translate("&7&o[Saving mines...]"));
+            plugin.getServer().broadcastMessage(CC.translate("&7&o[SERVER] Saving mines..."));
             playerMines.values().forEach(PlayerMine::save);
-            plugin.getServer().broadcastMessage(CC.translate("&7&o[Finished saving mines]"));
+            plugin.getServer().broadcastMessage(CC.translate("&7&o[SERVER] Finished saving mines"));
         }, 0L, 20L * 60 * 60); // every hour
     }
 
@@ -50,16 +50,19 @@ public class MineManager {
 
                 mine.setId(document.getInteger("id"));
                 mine.setLevel(document.getInteger("level"));
+                mine.setExperience(document.getInteger("experience"));
                 mine.setRadius(document.getInteger("radius"));
                 mine.setMiningAreaRadius(document.getInteger("miningAreaRadius"));
 
-                mine.setMineCenter(LocationUtil.deserializeLocation(document.getString("mineCenter")));
-                mine.setMineCornerOne(LocationUtil.deserializeLocation(document.getString("mineCornerOne")));
-                mine.setMineCornerTwo(LocationUtil.deserializeLocation(document.getString("mineCornerTwo")));
+                Document locations = document.get("locations", new Document());
 
-                mine.setMiningAreaCenter(LocationUtil.deserializeLocation(document.getString("miningAreaCenter")));
-                mine.setMiningAreaCornerOne(LocationUtil.deserializeLocation(document.getString("miningAreaCornerOne")));
-                mine.setMiningAreaCornerTwo(LocationUtil.deserializeLocation(document.getString("miningAreaCornerTwo")));
+                mine.setMineCenter(LocationUtil.deserializeLocation(locations.getString("mineCenter")));
+                mine.setMineCornerOne(LocationUtil.deserializeLocation(locations.getString("mineCornerOne")));
+                mine.setMineCornerTwo(LocationUtil.deserializeLocation(locations.getString("mineCornerTwo")));
+
+                mine.setMiningAreaCenter(LocationUtil.deserializeLocation(locations.getString("miningAreaCenter")));
+                mine.setMiningAreaCornerOne(LocationUtil.deserializeLocation(locations.getString("miningAreaCornerOne")));
+                mine.setMiningAreaCornerTwo(LocationUtil.deserializeLocation(locations.getString("miningAreaCornerTwo")));
 
                 if (document.containsKey("activeBlocks")) {
                     document.get("activeBlocks", new ArrayList<String>()).forEach((block) -> mine.getMineBlockManager().addBlock(block));

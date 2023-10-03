@@ -6,13 +6,14 @@ import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import tech.markxhewson.mines.command.MineCommand;
-import tech.markxhewson.mines.command.SetMineLevelCommand;
+import tech.markxhewson.mines.command.AdminCommand;
 import tech.markxhewson.mines.listener.BlockInteractListener;
 import tech.markxhewson.mines.listener.ConnectionListener;
 import tech.markxhewson.mines.listener.InventoryInteractListener;
 import tech.markxhewson.mines.manager.mine.MineManager;
 import tech.markxhewson.mines.manager.world.MineWorldManager;
 import tech.markxhewson.mines.storage.MongoManager;
+import tech.markxhewson.mines.util.expansion.PlaceholderAPI;
 
 @Getter
 public final class PrivateMines extends JavaPlugin {
@@ -39,8 +40,12 @@ public final class PrivateMines extends JavaPlugin {
         mineManager = new MineManager(this);
         gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderAPI(this).register();
+        }
+
         commandManager.registerCommand(new MineCommand(this));
-        commandManager.registerCommand(new SetMineLevelCommand(this));
+        commandManager.registerCommand(new AdminCommand(this));
 
         getServer().getPluginManager().registerEvents(new InventoryInteractListener(this), this);
         getServer().getPluginManager().registerEvents(new ConnectionListener(this), this);

@@ -1,18 +1,16 @@
 package tech.markxhewson.mines.manager.mine;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.Expose;
 import com.mongodb.client.model.FindOneAndReplaceOptions;
-import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import tech.markxhewson.mines.PrivateMines;
@@ -20,11 +18,10 @@ import tech.markxhewson.mines.manager.builder.MineBorderBuilder;
 import tech.markxhewson.mines.manager.builder.MineBuilder;
 import tech.markxhewson.mines.manager.builder.MiningAreaBuilder;
 import tech.markxhewson.mines.manager.mine.util.MineBlockManager;
-import tech.markxhewson.mines.util.CC;
 import tech.markxhewson.mines.util.LocationUtil;
+import tech.markxhewson.mines.util.PlayerUtil;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 @Getter @Setter
@@ -70,6 +67,10 @@ public class PlayerMine {
         this.ownerUuid = ownerUuid;
     }
 
+    public Player getOwner() {
+        return PrivateMines.getInstance().getServer().getPlayer(ownerUuid);
+    }
+
     public void teleport(Player player) {
         player.teleport(getMineCenter());
         updateWorldBorder(player);
@@ -93,24 +94,38 @@ public class PlayerMine {
     }
 
     public void giveExperience() {
-        experience += 5;
+        experience += PrivateMines.getInstance().getConfig().getInt("mines.defaultBlockExperience");
 
         if (experience >= getExperienceForNextLevel()) {
-            setLevel(level++);
-            setExperience(0);
+            level += 1;
+            experience = 0;
 
-            Player player = PrivateMines.getInstance().getServer().getPlayer(ownerUuid);
-            if (player == null) return;
+            Player player = getOwner();
+            if (player != null) {
+                player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
 
-            player.sendMessage(CC.translate("&4&lOMG! &eYour mine has leveled up to level &f" + level + "&e!"));
+                PlayerUtil.sendTitle(player, "&4&lLEVEL UP");
+                PlayerUtil.sendSubTitle(player, "&eYour mine is now level &f" + level);
+            }
         }
     }
 
-    public int getExperienceForNextLevel() {
-        return (int) Math.pow(25 * level, 1.5);
+    public double nextLevelPercentage() {
+        int experienceNeeded = getExperienceForNextLevel();
+
+        if (experienceNeeded == 0) {
+            return 100.0; // Avoid division by zero if already at max level
+        }
+
+        double percentage = (experience * 100.0) / experienceNeeded;
+        return Double.parseDouble(new DecimalFormat("#.##").format(percentage));
     }
 
-    public long getTimeRemainingOnMineCooldown() {
+    public int getExperienceForNextLevel() {
+        return (int) Math.pow(200 * level, 0.85);
+    }
+
+    public long getMineCooldown() {
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - lastMineReset;
 
@@ -129,15 +144,15 @@ public class PlayerMine {
     public void save() {
         JsonObject object = (JsonObject) new JsonParser().parse(PrivateMines.getInstance().getGson().toJson(this));
 
-        // independently handle location data as they can't be serialized with gson
-        object.addProperty("mineCenter", LocationUtil.serializeLocation(mineCenter));
-        object.addProperty("mineCornerOne", LocationUtil.serializeLocation(mineCornerOne));
-        object.addProperty("mineCornerTwo", LocationUtil.serializeLocation(mineCornerTwo));
+        Document locations = new Document()
+                .append("mineCenter", LocationUtil.serializeLocation(mineCenter))
+                .append("mineCornerOne", LocationUtil.serializeLocation(mineCornerOne))
+                .append("mineCornerTwo", LocationUtil.serializeLocation(mineCornerTwo))
+                .append("miningAreaCenter", LocationUtil.serializeLocation(miningAreaCenter))
+                .append("miningAreaCornerOne", LocationUtil.serializeLocation(miningAreaCornerOne))
+                .append("miningAreaCornerTwo", LocationUtil.serializeLocation(miningAreaCornerTwo));
 
-        object.addProperty("miningAreaCenter", LocationUtil.serializeLocation(miningAreaCenter));
-        object.addProperty("miningAreaCornerOne", LocationUtil.serializeLocation(miningAreaCornerOne));
-        object.addProperty("miningAreaCornerTwo", LocationUtil.serializeLocation(miningAreaCornerTwo));
-
+        object.add("locations", new JsonParser().parse(locations.toJson()));
 
         if (!mineBlockManager.getActiveBlocks().isEmpty()) {
             JSONArray blocksArray = new JSONArray();

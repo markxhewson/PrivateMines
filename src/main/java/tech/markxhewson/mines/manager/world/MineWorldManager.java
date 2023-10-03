@@ -39,7 +39,8 @@ public class MineWorldManager {
                 return null;
             }
 
-            return LocationUtil.deserializeLocation(document.getString("mineCenter"));
+            Document locations = document.get("locations", new Document());
+            return LocationUtil.deserializeLocation(locations.getString("mineCenter"));
         });
     }
 }

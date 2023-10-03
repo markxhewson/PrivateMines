@@ -13,9 +13,6 @@ import tech.markxhewson.mines.util.CC;
 import tech.markxhewson.mines.util.ItemBuilder;
 import tech.markxhewson.mines.util.TimeUtil;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class MineMenu extends Menu {
 
     private final PrivateMines plugin;
@@ -48,13 +45,15 @@ public class MineMenu extends Menu {
                         "&4&l: &7Mine Level: &a" + mine.getLevel(),
                         "&4&l: &7Created &a" + TimeUtil.formatMillis(System.currentTimeMillis() - mine.getCreatedAt()) + " &7ago",
                         "",
+                        "&4&l: &7Progress: &a" + mine.nextLevelPercentage() + "%",
+                        "",
                         "&7(( &aClick &7to teleport to your personal mine. ))"
                 );
 
         getInventory().setItem(10, mineItem.build());
 
         ItemBuilder resetItem = new ItemBuilder(Material.FISHING_ROD)
-                .setDisplayName("&c&lReset Mine " + (mine.getTimeRemainingOnMineCooldown() <= 0 ? "" : "&7(&f" + TimeUtil.formatMillis(mine.getTimeRemainingOnMineCooldown()) + " remaining&7)"))
+                .setDisplayName("&c&lReset Mine " + (mine.getMineCooldown() <= 0 ? "" : "&7(&f" + TimeUtil.formatMillis(mine.getMineCooldown()) + " remaining&7)"))
                 .setLore("&7(( &cClick &7to reset your mine. ))");
 
         ItemBuilder blockSelectItem = new ItemBuilder(Material.BEACON)
@@ -117,7 +116,7 @@ public class MineMenu extends Menu {
     }
 
     private void handleMineReset(Player player, PlayerMine mine) {
-        long cooldownTime = mine.getTimeRemainingOnMineCooldown();
+        long cooldownTime = mine.getMineCooldown();
         if (cooldownTime <= 0) {
             mine.updateMiningArea();
             player.sendMessage(CC.translate("&aYour mine has been reset successfully."));

@@ -73,8 +73,6 @@ public class MineBuilder {
                 mine.getMineCenter().getBlock().setType(Material.BEDROCK);
                 loadSchematic(mine);
             });
-
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, mine::save);
         });
     }
 
