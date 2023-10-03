@@ -73,7 +73,7 @@ public class SelectMineMenu extends Menu {
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                     player.closeInventory();
                     new MineMenu(plugin, player).open(player);
-                }, 5L);
+                }, 20L);
             } else {
                 player.sendMessage(CC.translate("&cYour personal mine could not be created. Please contact an administrator."));
             }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.scheduler.BukkitTask;
 import tech.markxhewson.mines.PrivateMines;
+import tech.markxhewson.mines.util.CC;
 import tech.markxhewson.mines.util.LocationUtil;
 
 import javax.xml.stream.Location;
@@ -22,9 +23,9 @@ public class MineManager {
         this.plugin = plugin;
 
         this.saveMinesTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            plugin.getServer().broadcastMessage("&7&o[Saving mines...]");
+            plugin.getServer().broadcastMessage(CC.translate("&7&o[Saving mines...]"));
             playerMines.values().forEach(PlayerMine::save);
-            plugin.getServer().broadcastMessage("&7&o[Finished saving mines]");
+            plugin.getServer().broadcastMessage(CC.translate("&7&o[Finished saving mines]"));
         }, 0L, 20L * 60 * 60); // every hour
     }
 
