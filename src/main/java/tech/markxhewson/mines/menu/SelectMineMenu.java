@@ -58,11 +58,11 @@ public class SelectMineMenu extends Menu {
             return;
         }
 
-        String theme = item.getItemMeta().getDisplayName();
-        String themeSchematic = findThemeSchematic(theme);
+        String themeIconName = item.getType().name();
+        String themeSchematic = findThemeSchematic(themeIconName);
 
         if (themeSchematic == null) {
-            System.out.println("[ERROR] Theme schematic not found for theme " + theme);
+            System.out.println("[ERROR] Theme schematic not found for theme " + themeIconName);
             return;
         }
 
@@ -75,11 +75,10 @@ public class SelectMineMenu extends Menu {
         });
     }
 
-    // function to find theme in config file
-    public String findThemeSchematic(String themeDisplayName) {
+    public String findThemeSchematic(String iconName) {
         for (String theme : plugin.getConfig().getConfigurationSection("themes").getKeys(false)) {
-            if (Objects.equals(plugin.getConfig().getString("themes." + theme + ".name"), themeDisplayName)) {
-                return plugin.getConfig().getString("themes." + theme + ".schematic");
+            if (plugin.getConfig().getString("themes." + theme + ".icon").equalsIgnoreCase(iconName)) {
+                return plugin.getConfig().getString("themes." + theme + ".fileName");
             }
         }
 

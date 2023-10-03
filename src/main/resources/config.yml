@@ -14,7 +14,7 @@ themes:
   jungleTheme:
     name: '&2&lJungle Mine'
     icon: 'LEAVES'
-    fileName: 'jungleMine.schematic'
+    fileName: 'jungleMine'
     description:
       - "&7&oEnter the depths of the jungle..."
       - ""
@@ -22,7 +22,7 @@ themes:
   desertTheme:
     name: '&6&lDesert Mine'
     icon: 'SAND'
-    fileName: 'desertMine.schematic'
+    fileName: 'desertMine'
     description:
       - "&7&oEnter the dunes of the desert..."
       - ""
