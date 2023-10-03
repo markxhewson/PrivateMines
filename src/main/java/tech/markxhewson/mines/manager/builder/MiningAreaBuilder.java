@@ -27,7 +27,7 @@ public class MiningAreaBuilder {
     public void build() {
         Location centerMineArea = mine.getMiningAreaCenter() != null ? mine.getMiningAreaCenter() : getMineCenter();
 
-        if (mine.getLevel() % 20 == 0 && mine.getLastMineIncreaseLevel() != mine.getLevel()) {
+        if (mine.getLevel() % PrivateMines.getInstance().getConfig().getInt("mines.expandMineEveryLevels") == 0 && mine.getLastMineIncreaseLevel() != mine.getLevel()) {
             mine.setMiningAreaRadius(mine.getMiningAreaRadius() + 1);
             mine.setLastMineIncreaseLevel(mine.getLevel());
         }
