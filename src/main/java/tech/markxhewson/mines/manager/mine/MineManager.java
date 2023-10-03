@@ -2,6 +2,7 @@ package tech.markxhewson.mines.manager.mine;
 
 import lombok.Getter;
 import org.bson.Document;
+import org.bukkit.scheduler.BukkitTask;
 import tech.markxhewson.mines.PrivateMines;
 import tech.markxhewson.mines.util.LocationUtil;
 
@@ -14,10 +15,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MineManager {
 
     private final PrivateMines plugin;
+    private final BukkitTask saveMinesTask;
     private final Map<UUID, PlayerMine> playerMines = new ConcurrentHashMap<>();
 
     public MineManager(PrivateMines plugin) {
         this.plugin = plugin;
+
+        this.saveMinesTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            plugin.getServer().broadcastMessage("&7&o[Saving mines...]");
+            playerMines.values().forEach(PlayerMine::save);
+            plugin.getServer().broadcastMessage("&7&o[Finished saving mines]");
+        }, 0L, 20L * 60 * 60); // every hour
     }
 
     public boolean hasMine(UUID uuid) {
