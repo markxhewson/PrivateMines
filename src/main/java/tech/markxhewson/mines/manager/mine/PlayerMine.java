@@ -14,9 +14,9 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import tech.markxhewson.mines.PrivateMines;
-import tech.markxhewson.mines.manager.builder.MineBorderBuilder;
-import tech.markxhewson.mines.manager.builder.MineBuilder;
-import tech.markxhewson.mines.manager.builder.MiningAreaBuilder;
+import tech.markxhewson.mines.manager.mine.builder.MineBorderBuilder;
+import tech.markxhewson.mines.manager.mine.builder.MineBuilder;
+import tech.markxhewson.mines.manager.mine.builder.MiningAreaBuilder;
 import tech.markxhewson.mines.manager.mine.util.MineBlockManager;
 import tech.markxhewson.mines.util.LocationUtil;
 import tech.markxhewson.mines.util.PlayerUtil;
@@ -40,6 +40,9 @@ public class PlayerMine {
     private int experience = 0;
 
     @Expose
+    private int blocksMined = 0;
+
+    @Expose(serialize = false, deserialize = false)
     private int lastMineIncreaseLevel = 1;
 
     @Expose
@@ -93,8 +96,9 @@ public class PlayerMine {
         this.lastMineReset = System.currentTimeMillis();
     }
 
-    public void giveExperience() {
+    public void handleBlockMine() {
         experience += PrivateMines.getInstance().getConfig().getInt("mines.defaultBlockExperience");
+        blocksMined += 1;
 
         if (experience >= getExperienceForNextLevel()) {
             level += 1;

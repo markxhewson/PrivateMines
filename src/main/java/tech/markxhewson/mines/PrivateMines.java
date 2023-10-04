@@ -7,9 +7,10 @@ import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import tech.markxhewson.mines.command.MineCommand;
 import tech.markxhewson.mines.command.AdminCommand;
-import tech.markxhewson.mines.listener.BlockInteractListener;
-import tech.markxhewson.mines.listener.ConnectionListener;
-import tech.markxhewson.mines.listener.InventoryInteractListener;
+import tech.markxhewson.mines.manager.events.EventsManager;
+import tech.markxhewson.mines.manager.events.listener.BlockInteractListener;
+import tech.markxhewson.mines.manager.events.listener.ConnectionListener;
+import tech.markxhewson.mines.manager.events.listener.InventoryInteractListener;
 import tech.markxhewson.mines.manager.mine.MineManager;
 import tech.markxhewson.mines.manager.world.MineWorldManager;
 import tech.markxhewson.mines.storage.MongoManager;
@@ -21,6 +22,7 @@ public final class PrivateMines extends JavaPlugin {
     private static PrivateMines instance;
 
     private BukkitCommandManager commandManager;
+    private EventsManager eventsManager;
 
     private MongoManager mongoManager;
     private MineWorldManager mineWorldManager;
@@ -34,6 +36,8 @@ public final class PrivateMines extends JavaPlugin {
         instance = this;
 
         commandManager = new BukkitCommandManager(this);
+        eventsManager = new EventsManager(this);
+        initCommands();
 
         mongoManager = new MongoManager(this);
         mineWorldManager = new MineWorldManager(this);
@@ -43,18 +47,16 @@ public final class PrivateMines extends JavaPlugin {
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderAPI(this).register();
         }
-
-        commandManager.registerCommand(new MineCommand(this));
-        commandManager.registerCommand(new AdminCommand(this));
-
-        getServer().getPluginManager().registerEvents(new InventoryInteractListener(this), this);
-        getServer().getPluginManager().registerEvents(new ConnectionListener(this), this);
-        getServer().getPluginManager().registerEvents(new BlockInteractListener(this), this);
     }
 
     @Override
     public void onDisable() {
         getMongoManager().disconnect();
+    }
+
+    public void initCommands() {
+        commandManager.registerCommand(new MineCommand(this));
+        commandManager.registerCommand(new AdminCommand(this));
     }
 
     public static PrivateMines getInstance() {

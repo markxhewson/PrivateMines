@@ -1,21 +1,17 @@
-package tech.markxhewson.mines.manager.builder;
+package tech.markxhewson.mines.manager.mine.builder;
 
 import com.boydti.fawe.FaweAPI;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import tech.markxhewson.mines.PrivateMines;
 import tech.markxhewson.mines.manager.mine.PlayerMine;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class MineBuilder {
 

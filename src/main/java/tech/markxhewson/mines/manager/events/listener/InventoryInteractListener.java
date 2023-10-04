@@ -1,4 +1,4 @@
-package tech.markxhewson.mines.listener;
+package tech.markxhewson.mines.manager.events.listener;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -33,16 +33,23 @@ public class PlaceholderAPI extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String params) {
         PlayerMine mine = plugin.getMineManager().getMine(player.getUniqueId());
 
+        if (params.equalsIgnoreCase("hasmine")) {
+            return String.valueOf(mine != null);
+        }
+
         if (mine == null) {
             return "";
         }
 
-        if (params.equalsIgnoreCase("mine_level")) {
-            return String.valueOf(mine.getLevel());
+        switch (params.toLowerCase()) {
+            case "mine_level":
+                return String.valueOf(mine.getLevel());
+            case "mine_nextlevelpercentage":
+                return mine.nextLevelPercentage() + "%";
+            case "mine_blocksmined":
+                return String.valueOf(mine.getBlocksMined());
         }
-        else if (params.equalsIgnoreCase("mine_nextLevelPercentage")) {
-            return mine.nextLevelPercentage() + "%";
-        }
+
 
         return null;
     }

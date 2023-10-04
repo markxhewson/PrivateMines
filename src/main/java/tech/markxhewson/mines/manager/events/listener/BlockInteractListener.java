@@ -1,4 +1,4 @@
-package tech.markxhewson.mines.listener;
+package tech.markxhewson.mines.manager.events.listener;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,7 +39,7 @@ public class BlockInteractListener implements Listener {
         event.setCancelled(true);
         event.getBlock().setType(Material.AIR);
 
-        mine.giveExperience();
+        mine.handleBlockMine();
     }
 
     @EventHandler

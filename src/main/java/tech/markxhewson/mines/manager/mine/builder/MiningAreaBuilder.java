@@ -1,6 +1,5 @@
-package tech.markxhewson.mines.manager.builder;
+package tech.markxhewson.mines.manager.mine.builder;
 
-import com.boydti.fawe.util.EditSessionBuilder;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.blocks.BaseBlock;
@@ -10,7 +9,6 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.function.pattern.BlockPattern;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import jdk.nashorn.internal.ir.Block;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import tech.markxhewson.mines.PrivateMines;

@@ -1,9 +1,8 @@
-package tech.markxhewson.mines.listener;
+package tech.markxhewson.mines.manager.events.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import tech.markxhewson.mines.PrivateMines;

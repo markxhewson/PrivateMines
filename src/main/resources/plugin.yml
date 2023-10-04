@@ -4,3 +4,7 @@ main: tech.markxhewson.mines.PrivateMines
 
 depend:
   - WorldEdit
+  - PlaceholderAPI
+
+softdepend:
+  - SimpleScore

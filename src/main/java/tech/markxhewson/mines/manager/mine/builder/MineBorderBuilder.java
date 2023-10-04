@@ -1,4 +1,4 @@
-package tech.markxhewson.mines.manager.builder;
+package tech.markxhewson.mines.manager.mine.builder;
 
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder;
 import net.minecraft.server.v1_8_R3.WorldBorder;
