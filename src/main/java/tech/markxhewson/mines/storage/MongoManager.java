@@ -22,6 +22,7 @@ public class MongoManager {
     private MongoClient mongoClient;
     private MongoDatabase mongoDatabase;
 
+    private MongoCollection<Document> usersCollection;
     private MongoCollection<Document> minesCollection;
 
     public MongoManager(PrivateMines plugin) {
@@ -46,6 +47,7 @@ public class MongoManager {
         mongoClient = MongoClients.create(settings);
         mongoDatabase = mongoClient.getDatabase(getDatabase());
 
+        usersCollection = mongoDatabase.getCollection(MongoCollections.USERS.getCollectionId());
         minesCollection = mongoDatabase.getCollection(MongoCollections.MINES.getCollectionId());
     }
 

@@ -51,6 +51,7 @@ public class MineManager {
                 mine.setId(document.getInteger("id"));
                 mine.setLevel(document.getInteger("level"));
                 mine.setExperience(document.getInteger("experience"));
+                mine.setBlocksMined(document.getInteger("blocksMined"));
                 mine.setRadius(document.getInteger("radius"));
                 mine.setMiningAreaRadius(document.getInteger("miningAreaRadius"));
 

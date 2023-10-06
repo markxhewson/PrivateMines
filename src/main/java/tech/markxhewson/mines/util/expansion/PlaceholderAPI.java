@@ -5,6 +5,9 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import tech.markxhewson.mines.PrivateMines;
 import tech.markxhewson.mines.manager.mine.PlayerMine;
+import tech.markxhewson.mines.util.NumberUtil;
+
+import java.text.NumberFormat;
 
 public class PlaceholderAPI extends PlaceholderExpansion {
 
@@ -47,7 +50,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             case "mine_nextlevelpercentage":
                 return mine.nextLevelPercentage() + "%";
             case "mine_blocksmined":
-                return String.valueOf(mine.getBlocksMined());
+                return String.valueOf(NumberUtil.format(mine.getBlocksMined()));
         }
 
 

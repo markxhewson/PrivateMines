@@ -43,7 +43,7 @@ public class MiningAreaBuilder {
         int mineAreaRadius = mine.getMiningAreaRadius() + 1;
 
         Location corner1 = new Location(centerMineArea.getWorld(), centerMineArea.getX() - mineAreaRadius, centerMineArea.getY(), centerMineArea.getZ() - mineAreaRadius);
-        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + mineAreaRadius, centerMineArea.getY() - ((mineAreaRadius * 3) + 1), centerMineArea.getZ() + mineAreaRadius);
+        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + mineAreaRadius, centerMineArea.getY() - (mineAreaRadius + 1), centerMineArea.getZ() + mineAreaRadius);
 
         CuboidRegion region = new CuboidRegion(BukkitUtil.toVector(corner1), BukkitUtil.toVector(corner2));
 
@@ -57,7 +57,7 @@ public class MiningAreaBuilder {
         int mineBlocksRadius = mine.getMiningAreaRadius() - 1;
 
         Location corner1 = new Location(centerMineArea.getWorld(), centerMineArea.getX() - mineBlocksRadius, centerMineArea.getY(), centerMineArea.getZ() - mineBlocksRadius);
-        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + mineBlocksRadius, centerMineArea.getY() - (mineBlocksRadius * 3), centerMineArea.getZ() + mineBlocksRadius);
+        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + mineBlocksRadius, centerMineArea.getY() - mineBlocksRadius, centerMineArea.getZ() + mineBlocksRadius);
 
         CuboidRegion mineBlocksRegion = new CuboidRegion(BukkitUtil.toVector(corner1), BukkitUtil.toVector(corner2));
 
@@ -81,7 +81,7 @@ public class MiningAreaBuilder {
         int wallsRadius = mine.getMiningAreaRadius() + 1;
 
         Location corner1 = new Location(centerMineArea.getWorld(), centerMineArea.getX() - wallsRadius, centerMineArea.getY(), centerMineArea.getZ() - wallsRadius);
-        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + wallsRadius, centerMineArea.getY() - ((wallsRadius * 3) + 1), centerMineArea.getZ() + wallsRadius);
+        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + wallsRadius, centerMineArea.getY() - (wallsRadius + 1), centerMineArea.getZ() + wallsRadius);
 
         CuboidRegion wallsRegion = new CuboidRegion(BukkitUtil.toVector(corner1), BukkitUtil.toVector(corner2));
 
@@ -92,10 +92,10 @@ public class MiningAreaBuilder {
     }
 
     private void createMineFloor(Location centerMineArea) {
-        int wallsRadius = mine.getMiningAreaRadius();
+        int wallsRadius = mine.getMiningAreaRadius() + 1;
 
-        Location corner1 = new Location(centerMineArea.getWorld(), centerMineArea.getX() - wallsRadius, centerMineArea.getY() - (wallsRadius * 3), centerMineArea.getZ() - wallsRadius);
-        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + wallsRadius, centerMineArea.getY() - (wallsRadius * 3), centerMineArea.getZ() + wallsRadius);
+        Location corner1 = new Location(centerMineArea.getWorld(), centerMineArea.getX() - wallsRadius, centerMineArea.getY() - (wallsRadius + 1), centerMineArea.getZ() - wallsRadius);
+        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + wallsRadius, centerMineArea.getY() - (wallsRadius + 1), centerMineArea.getZ() + wallsRadius);
 
         CuboidRegion floorRegion = new CuboidRegion(BukkitUtil.toVector(corner1), BukkitUtil.toVector(corner2));
 
@@ -111,7 +111,7 @@ public class MiningAreaBuilder {
         mine.setMiningAreaCenter(centerMineArea);
 
         Location corner1 = new Location(centerMineArea.getWorld(), centerMineArea.getX() - wallsRadius, centerMineArea.getY(), centerMineArea.getZ() - wallsRadius);
-        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + wallsRadius, centerMineArea.getY() - ((wallsRadius * 3) + 1), centerMineArea.getZ() + wallsRadius);
+        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + wallsRadius, centerMineArea.getY() - (wallsRadius + 1), centerMineArea.getZ() + wallsRadius);
 
         mine.setMiningAreaCornerOne(corner1);
         mine.setMiningAreaCornerTwo(corner2);

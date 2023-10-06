@@ -4,13 +4,18 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.Expose;
 import com.mongodb.client.model.FindOneAndReplaceOptions;
+import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import tech.markxhewson.mines.PrivateMines;
@@ -96,6 +101,31 @@ public class PlayerMine {
         this.lastMineReset = System.currentTimeMillis();
     }
 
+    public boolean isMineUnderCapacity() {
+        Location centerMineArea = getMiningAreaCenter();
+        int mineBlocksRadius = getMiningAreaRadius() - 1;
+
+        Location corner1 = new Location(centerMineArea.getWorld(), centerMineArea.getX() - mineBlocksRadius, centerMineArea.getY(), centerMineArea.getZ() - mineBlocksRadius);
+        Location corner2 = new Location(centerMineArea.getWorld(), centerMineArea.getX() + mineBlocksRadius, centerMineArea.getY() - mineBlocksRadius, centerMineArea.getZ() + mineBlocksRadius);
+
+        CuboidRegion region = new CuboidRegion(BukkitUtil.toVector(corner1), BukkitUtil.toVector(corner2));
+
+        int maxBlocks = 0;
+        int currentBlocks = 0;
+
+        for (BlockVector vector : region) {
+            Block block = centerMineArea.getWorld().getBlockAt(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
+
+            if (block.getType() != Material.AIR) {
+                currentBlocks += 1;
+            }
+
+            maxBlocks += 1;
+        }
+
+        return currentBlocks <= (maxBlocks * 0.2);
+    }
+
     public void handleBlockMine() {
         experience += PrivateMines.getInstance().getConfig().getInt("mines.defaultBlockExperience");
         blocksMined += 1;
@@ -111,6 +141,10 @@ public class PlayerMine {
                 PlayerUtil.sendTitle(player, "&4&lLEVEL UP");
                 PlayerUtil.sendSubTitle(player, "&eYour mine is now level &f" + level);
             }
+        }
+
+        if (isMineUnderCapacity()) {
+            updateMiningArea();
         }
     }
 

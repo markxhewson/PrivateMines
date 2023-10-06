@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum MongoCollections {
 
+    USERS("users"),
     MINES("mines");
 
     private final String collectionId;

@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import tech.markxhewson.mines.command.MineCommand;
 import tech.markxhewson.mines.command.AdminCommand;
+import tech.markxhewson.mines.manager.enchants.EnchantsManager;
 import tech.markxhewson.mines.manager.events.EventsManager;
 import tech.markxhewson.mines.manager.events.listener.BlockInteractListener;
 import tech.markxhewson.mines.manager.events.listener.ConnectionListener;
@@ -27,6 +28,9 @@ public final class PrivateMines extends JavaPlugin {
     private MongoManager mongoManager;
     private MineWorldManager mineWorldManager;
     private MineManager mineManager;
+
+    private EnchantsManager enchantsManager;
+
     private Gson gson;
 
     @Override
@@ -42,6 +46,9 @@ public final class PrivateMines extends JavaPlugin {
         mongoManager = new MongoManager(this);
         mineWorldManager = new MineWorldManager(this);
         mineManager = new MineManager(this);
+
+        enchantsManager = new EnchantsManager(this);
+
         gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
