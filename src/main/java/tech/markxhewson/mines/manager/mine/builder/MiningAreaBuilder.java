@@ -6,6 +6,8 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.blocks.BlockID;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.extent.AbstractDelegateExtent;
+import com.sk89q.worldedit.extent.Extent;
 import com.sk89q.worldedit.function.pattern.BlockPattern;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.regions.CuboidRegion;
@@ -48,6 +50,7 @@ public class MiningAreaBuilder {
         CuboidRegion region = new CuboidRegion(BukkitUtil.toVector(corner1), BukkitUtil.toVector(corner2));
 
         EditSession session = new EditSession(new BukkitWorld(PrivateMines.getInstance().getMineWorldManager().getMinesWorld()), -1);
+
         session.setBlocks(region, new BaseBlock(BlockID.AIR));
         session.commit();
         session.flushQueue();

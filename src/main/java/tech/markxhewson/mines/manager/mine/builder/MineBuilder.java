@@ -83,7 +83,9 @@ public class MineBuilder {
         }
 
         try {
-            EditSession session = format.load(file).paste(FaweAPI.getWorld(mine.getMineCenter().getWorld().getName()), BukkitUtil.toVector(mine.getMineCenter()), false, false, null);
+            EditSession session = format
+                    .load(file)
+                    .paste(FaweAPI.getWorld(mine.getMineCenter().getWorld().getName()), BukkitUtil.toVector(mine.getMineCenter()), false, false, null);
             session.commit();
         } catch (IOException e) {
             throw new RuntimeException(e);
